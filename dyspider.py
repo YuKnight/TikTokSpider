@@ -6,9 +6,7 @@ import re
 import sys
 from argparse import ArgumentParser
 from time import sleep
-
 import requests
-
 from head import download_headers, video_headers, Web_UA
 
 VIDEO_URLS, PAGE = [], 1
@@ -119,14 +117,28 @@ def get_parser():
     return parser.parse_args()
 
 
+def get_douyin_id():
+    args = get_parser()
+    if args.user_id:
+        _id = args.user_id
+    else:
+        _id = input('请输入你要爬取的抖音用户id: ')
+    if not re.match('^\d+$', str(_id).strip()):
+        sys.stdout.write("请输入正确格式的抖音id\n")
+        return
+    return _id
+
+
 def main():
     '''
      主函数
      '''
-    args = get_parser()
-    _id = args.user_id if args.user_id else int(input('请输入你要爬取的抖音用户id: '))
+    _id = get_douyin_id()
+    if not _id: return
+
     username, dytk = get_name_and_dytk(_id)
     if not (username and dytk): return
+
     makedir(username)
     get_all_video_urls(_id, 0, dytk)
     for index, item in enumerate(VIDEO_URLS, 1):
