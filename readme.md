@@ -8,7 +8,7 @@
 
 ## 使用方法
 
-1. 运行dyspider.py文件，输入要爬用户的id  (注意不是手机端的抖音号)
+1. 运行dyspider.py文件，输入要爬用户的id  (**注意不是手机端的抖音号**)
 
    ![dd](https://github.com/huangke19/TikTokSpider/raw/master/pics/desc.png)
 
@@ -18,9 +18,25 @@
    python dyspider.py --uid 64742778880
    ```
 
+
+
+##   注意!!!
+
+如果出现这个错误，表示你输入了抖音号，而不是抖音ID
+
+  ```shell
+  Traceback (most recent call last):
+    File "/Users/xxx/PycharmProjects/TikTokSpider/dyspider.py", line 135, in <module>
+      main()
+    File "/Users/xxx/PycharmProjects/TikTokSpider/dyspider.py", line 122, in main
+      username, dytk = get_name_and_dytk(_id)
+  TypeError: 'NoneType' object is not iterable
+  ```
 - 抖音号不是抖音ID，抖音ID在这里：
 
   ![dd](https://github.com/huangke19/TikTokSpider/raw/master/pics/id.png)
+
+
 
   抖音ID可以通过将主页分享链接发用浏览器打开查看，详细步骤参见
 
