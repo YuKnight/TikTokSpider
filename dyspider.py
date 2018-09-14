@@ -92,8 +92,12 @@ def get_name_and_dytk(num):
         name = re.findall('<p class="nickname">(.*?)</p>', response.text)[0]
         dytk = re.findall("dytk: '(.*?)'", response.text)[0]
         return name, dytk
-    except Exception:
-        return
+    except (TypeError, IndexError):
+        sys.stdout.write("提示： 请确认输入的是用户ID，而不是抖音号或单个视频的id\n")
+        return None, None
+    except requests.exceptions:
+        sys.stdout.write("连接错误，未能获取正确数据\n")
+        return None, None
 
 
 def makedir(name):
@@ -116,10 +120,13 @@ def get_parser():
 
 
 def main():
-    ''' 主函数 '''
+    '''
+     主函数
+     '''
     args = get_parser()
     _id = args.user_id if args.user_id else int(input('请输入你要爬取的抖音用户id: '))
     username, dytk = get_name_and_dytk(_id)
+    if not (username and dytk): return
     makedir(username)
     get_all_video_urls(_id, 0, dytk)
     for index, item in enumerate(VIDEO_URLS, 1):
