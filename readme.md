@@ -20,18 +20,10 @@
 
 
 
-#### *FBI WARNING*! （233）
+### *FB1 WARNING*! （233）
 
-如果出现这个错误，表示你输错了id，可能是输成了用户的抖音号，或者单个视频的id，而不是用户的抖音ID
+请仔细阅读说明，请确认输入的是用户的抖音ID，而不是用户的抖音号，或者单个视频的ID
 
-  ```shell
-  Traceback (most recent call last):
-    File "/Users/xxx/PycharmProjects/TikTokSpider/dyspider.py", line 135, in <module>
-      main()
-    File "/Users/xxx/PycharmProjects/TikTokSpider/dyspider.py", line 122, in main
-      username, dytk = get_name_and_dytk(_id)
-  TypeError: 'NoneType' object is not iterable
-  ```
 - 抖音号不是抖音ID，抖音ID在这里：
 
   ![dd](https://github.com/huangke19/TikTokSpider/raw/master/pics/id.png)
