@@ -20,9 +20,9 @@
 
 
 
-##   注意!!!
+#### *FBI WARNING*! （233）
 
-如果出现这个错误，表示你输入了抖音号，而不是抖音ID
+如果出现这个错误，表示你输错了id，可能是输成了用户的抖音号，或者单个视频的id，而不是用户的抖音ID
 
   ```shell
   Traceback (most recent call last):
