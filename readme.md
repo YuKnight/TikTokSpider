@@ -30,11 +30,11 @@
 
 
 
-  抖音ID可以通过将主页分享链接发送到电脑，使用浏览器打开查看，详细步骤参见
+​	抖音ID可以通过将主页分享链接发送到电脑，使用浏览器打开查看，分享详细步骤参见
 
-  [抖音短视频的抖音号-抖音ID怎么看？](https://jingyan.baidu.com/article/90bc8fc8afe4aff652640c7d.html)
+​	[抖音短视频的抖音号-抖音ID怎么看？](https://jingyan.baidu.com/article/90bc8fc8afe4aff652640c7d.html)
 
-https://jingyan.baidu.com/article/90bc8fc8afe4aff652640c7d.html
+​	https://jingyan.baidu.com/article/90bc8fc8afe4aff652640c7d.html
 
 
 
