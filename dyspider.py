@@ -6,7 +6,9 @@ import re
 import sys
 from argparse import ArgumentParser
 from time import sleep
+
 import requests
+
 from head import download_headers, video_headers, Web_UA
 
 VIDEO_URLS, PAGE = [], 1
@@ -118,15 +120,26 @@ def get_parser():
 
 
 def get_douyin_id():
+    '''
+    从命令行或input获取抖音用户id
+    '''
     args = get_parser()
     if args.user_id:
         _id = args.user_id
     else:
         _id = input('请输入你要爬取的抖音用户id: ')
-    if not re.match('^\d+$', str(_id).strip()):
-        sys.stdout.write("请输入正确格式的抖音id\n")
-        return
     return _id
+
+
+def is_valid_id(_id):
+    '''
+    检查用户输入的抖音id是否合法
+    '''
+    if not _id: return False
+    if not re.match('^\\d+$', str(_id).strip()):
+        sys.stdout.write("请输入正确格式的抖音id\n")
+        return False
+    return True
 
 
 def main():
@@ -134,7 +147,7 @@ def main():
      主函数
      '''
     _id = get_douyin_id()
-    if not _id: return
+    if not is_valid_id(_id): return
 
     username, dytk = get_name_and_dytk(_id)
     if not (username and dytk): return
