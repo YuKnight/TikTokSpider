@@ -110,20 +110,21 @@ def makedir(name):
         pass
 
 
-def get_parser():
+def parse_args(args):
     '''
-    解析参数
+    :param args: 命令行参数
+    :return: 新的parse_args函数
     '''
     parser = ArgumentParser()
     parser.add_argument('--uid', dest='user_id', type=int, help='用户的抖音id')
-    return parser.parse_args()
+    return parser.parse_args(args)
 
 
 def get_douyin_id():
     '''
     从命令行或input获取抖音用户id
     '''
-    args = get_parser()
+    args = parse_args(sys.argv[1:])
     if args.user_id:
         _id = args.user_id
     else:
