@@ -122,14 +122,34 @@ def parse_args(args):
 
 def get_douyin_id():
     '''
-    从命令行或input获取抖音用户id
+    获取抖音用户id
     '''
-    args = parse_args(sys.argv[1:])
+    _id1 = get_id_from_cmd(sys.argv[1:])
+    if _id1: return _id1
+
+    _id2 = get_id_from_input()
+    return _id2 if _id2 else None
+
+
+def get_id_from_cmd(cmd_args):
+    '''
+    从命令行获取user_id
+    '''
+    args = parse_args(cmd_args)
+    if not args: return
+
     if args.user_id:
         _id = args.user_id
-    else:
-        _id = input('请输入你要爬取的抖音用户id: ')
-    return _id
+        return _id
+    return None
+
+
+def get_id_from_input():
+    '''
+    从用户输入获取user_id
+    '''
+    _id = input('请输入你要爬取的抖音用户id: ')
+    return int(_id)
 
 
 def is_valid_id(_id):
