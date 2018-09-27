@@ -40,7 +40,7 @@ def get_all_video_urls(user_id, max_cursor, dytk):
                 PAGE += 1
                 return get_all_video_urls(user_id, data.get('max_cursor'), dytk)
             else:
-                return
+                return VIDEO_URLS
         else:
             print(response.status_code)
             return
@@ -174,7 +174,7 @@ def main():
     if not (username and dytk): return
 
     makedir(username)
-    get_all_video_urls(_id, 0, dytk)
+    VIDEO_URLS = get_all_video_urls(_id, 0, dytk)
     for index, item in enumerate(VIDEO_URLS, 1):
         name = item[0]
         if name == '抖音-原创音乐短视频社区':
