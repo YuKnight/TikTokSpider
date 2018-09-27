@@ -19,6 +19,7 @@ class TestIs_valid_id(TestCase):
         self.assertFalse(is_valid_id(''))
         self.assertFalse(is_valid_id('KASFJ'))
         self.assertFalse(is_valid_id(0))
+        self.assertFalse(is_valid_id(None))
 
 
 class TestGet_parser(TestCase):
@@ -34,3 +35,15 @@ class TestGet_parser(TestCase):
         self.assertEqual(self.args.user_id, 1234)
         self.assertNotEqual(self.args.user_id, '1234')
         self.assertNotEqual(self.args.user_id, 123)
+
+
+class TestGet_douyin_id(TestCase):
+
+    def test_get_id_from_cmd(self):
+        from dyspider import get_id_from_cmd
+        _id = get_id_from_cmd(['--uid', '1234'])
+        self.assertEqual(_id, 1234)
+        self.assertNotEqual(_id, 123)
+
+    def test_get_id_from_input(self):
+        pass
