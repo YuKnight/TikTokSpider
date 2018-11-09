@@ -73,8 +73,16 @@ def get_all_video_urls(user_id, max_cursor, dytk):
 
 def download_video(index, username, name, url, retry=3):
     '''
-     下载视频,显示进度
-     '''
+    下载视频,显示进度
+
+    :param index:       视频序号
+    :param username:    用户名
+    :param name:        视频名
+    :param url:         视频地址
+    :param retry:       重试次数
+
+    :return:            None
+    '''
     print("\r正在下载第%s个视频: %s" % (index, name))
     try:
         response = requests.get(
