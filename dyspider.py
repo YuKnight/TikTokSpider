@@ -1,30 +1,51 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+''' 一只抖音小爬虫 '''
+
+#############################
+#
+#  Author: huang ke
+#  Email: huangkwell@163.com
+#
+#############################
+
+
+# 导入标准库
 import os
 import re
 import sys
 from argparse import ArgumentParser
 from time import sleep
 
+# 导入第三方库
 import requests
 
+# 导入自定义变量
 from head import download_headers, video_headers, Web_UA
 
+# 全局变量
 VIDEO_URLS, PAGE = [], 1
 
 
 def get_all_video_urls(user_id, max_cursor, dytk):
     '''
-    获取所有视频的源地址
+    获取用户所有视频的源地址url
+
+    :param user_id:     用户抖音id
+    :param max_cursor:  下一页地址游标
+    :param dytk:        抖音token
+
+    :return:            video urls
     '''
     url = "https://www.amemv.com/aweme/v1/aweme/post/?"
-    params = {'user_id'   : user_id,
-              'count'     : 21,
+    params = {'user_id': user_id,
+              'count': 21,
               'max_cursor': max_cursor,
-              'dytk'      : dytk}
+              'dytk': dytk}
     try:
-        response = requests.request("GET", url, params=params, headers=video_headers)
+        response = requests.request(
+            "GET", url, params=params, headers=video_headers)
         if response.status_code == 200:
             data = response.json()
             for li in data['aweme_list']:
@@ -38,7 +59,8 @@ def get_all_video_urls(user_id, max_cursor, dytk):
                 global PAGE
                 print('正在收集第%s页视频地址' % (PAGE))
                 PAGE += 1
-                return get_all_video_urls(user_id, data.get('max_cursor'), dytk)
+                return get_all_video_urls(
+                    user_id, data.get('max_cursor'), dytk)
             else:
                 return VIDEO_URLS
         else:
@@ -55,9 +77,15 @@ def download_video(index, username, name, url, retry=3):
      '''
     print("\r正在下载第%s个视频: %s" % (index, name))
     try:
-        response = requests.get(url, stream=True, headers=download_headers, timeout=15, allow_redirects=False)
+        response = requests.get(
+            url,
+            stream=True,
+            headers=download_headers,
+            timeout=15,
+            allow_redirects=False)
         video_url = response.headers['Location']
-        video_response = requests.get(video_url, headers=download_headers, timeout=15)
+        video_response = requests.get(
+            video_url, headers=download_headers, timeout=15)
 
         # 保存视频，显示下载进度
         if video_response.status_code == 200:
@@ -68,9 +96,11 @@ def download_video(index, username, name, url, retry=3):
                     data_length += len(data)
                     f.write(data)
                     done = int(50 * data_length / video_size)
-                    sys.stdout.write("\r下载进度: [%s%s]" % ('█' * done, ' ' * (50 - done)))
+                    sys.stdout.write("\r下载进度: [%s%s]" % (
+                        '█' * done, ' ' * (50 - done)))
                     sys.stdout.flush()
-        # 失败重试3次
+
+        # 失败重试3次，超过放弃
         elif video_response.status_code != 200 and retry:
             retry -= 1
             download_video(index, username, name, url, retry)
@@ -84,6 +114,9 @@ def download_video(index, username, name, url, retry=3):
 def get_name_and_dytk(num):
     '''
     获取用户名和dytk
+
+    :param num:     用户抖音id
+    :returns:       username，dytk
     '''
     url = "https://www.amemv.com/share/user/%s" % num
     headers = {'user-agent': Web_UA}
@@ -102,8 +135,11 @@ def get_name_and_dytk(num):
 
 def makedir(name):
     '''
-     建立用户名文件夹
-     '''
+    建立用户名文件夹
+
+    :param name:    username
+    :return:        None
+    '''
     if not os.path.isdir(name):
         os.mkdir(name)
     else:
@@ -112,8 +148,10 @@ def makedir(name):
 
 def parse_args(args):
     '''
-    :param args: 命令行参数
-    :return: 新的parse_args函数
+    解析命令行参数
+
+    :param args:    命令行参数
+    :return:        新的parse_args函数
     '''
     parser = ArgumentParser()
     parser.add_argument('--uid', dest='user_id', type=int, help='用户的抖音id')
@@ -123,9 +161,12 @@ def parse_args(args):
 def get_douyin_id():
     '''
     获取抖音用户id
+
+    :return:    user_id
     '''
     _id1 = get_id_from_cmd(sys.argv[1:])
-    if _id1: return _id1
+    if _id1:
+        return _id1
 
     _id2 = get_id_from_input()
     return _id2 if _id2 else None
@@ -134,9 +175,13 @@ def get_douyin_id():
 def get_id_from_cmd(cmd_args):
     '''
     从命令行获取user_id
+
+    :param cmd_args:    命令行参数
+    :return:            user_id
     '''
     args = parse_args(cmd_args)
-    if not args: return
+    if not args:
+        return
 
     if args.user_id:
         _id = args.user_id
@@ -147,6 +192,8 @@ def get_id_from_cmd(cmd_args):
 def get_id_from_input():
     '''
     从用户输入获取user_id
+
+    :return:    user_id
     '''
     _id = input('请输入你要爬取的抖音用户id: ')
     return int(_id)
@@ -155,8 +202,12 @@ def get_id_from_input():
 def is_valid_id(_id):
     '''
     检查用户输入的抖音id是否合法
+
+    :param _id:  user_id
+    :return:     bool
     '''
-    if not _id: return False
+    if not _id:
+        return False
     if not re.match('^\\d+$', str(_id).strip()):
         sys.stdout.write("请输入正确格式的抖音id\n")
         return False
@@ -165,13 +216,17 @@ def is_valid_id(_id):
 
 def main():
     '''
-     主函数
-     '''
+    主函数, 下载视频
+
+    :return: None
+    '''
     _id = get_douyin_id()
-    if not is_valid_id(_id): return
+    if not is_valid_id(_id):
+        return
 
     username, dytk = get_name_and_dytk(_id)
-    if not (username and dytk): return
+    if not (username and dytk):
+        return
 
     makedir(username)
     VIDEO_URLS = get_all_video_urls(_id, 0, dytk)
